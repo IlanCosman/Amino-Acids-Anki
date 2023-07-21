@@ -1,18 +1,13 @@
 import os
 import re
 import time
+from typing import Iterable
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
 
-def main() -> None:
-    AMINO_ACID_NAMES = [
-        "Alanine",
-        "Arginine",
-        "Asparagine",
-    ]
-
+def generate_svgs(names: Iterable[str]) -> None:
     NAME_TO_STRUCTURE_SLEEP = 0.75
     GET_SVG_SLEEP = 0.5
 
@@ -28,7 +23,7 @@ def main() -> None:
 
     is_first = True
 
-    for name in AMINO_ACID_NAMES:
+    for name in names:
         D.find_element(By.XPATH, "(//button[@id='CDW_NameToStructure'])[2]").click()
         if is_first:
             D.find_element(By.CSS_SELECTOR, ".checkbox-inline").click()
@@ -61,7 +56,3 @@ def modify_svg(svg: str) -> str:
         .replace('style="background-color: #ffffffff"', "")
         .replace('fill="#000000"', 'fill="#ffffff"')
     )
-
-
-if __name__ == "__main__":
-    main()
