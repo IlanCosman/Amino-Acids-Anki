@@ -27,10 +27,9 @@ def generate_svgs(names: Iterable[str]) -> None:
         if is_first:  # Disable "Paste name below structure" on first run
             D.find_element(By.CSS_SELECTOR, ".checkbox-inline").click()
             is_first = False
-        D.find_element(By.CSS_SELECTOR, ".cdd-dialog-input:nth-child(2)").clear()
-        D.find_element(By.CSS_SELECTOR, ".cdd-dialog-input:nth-child(2)").send_keys(
-            name
-        )
+        input_field = D.find_element(By.CSS_SELECTOR, ".cdd-dialog-input:nth-child(2)")
+        input_field.clear()
+        input_field.send_keys(name)
         D.find_element(By.CSS_SELECTOR, ".cdd-button-ok").click()
         time.sleep(NAME_TO_STRUCTURE_SLEEP)
 
