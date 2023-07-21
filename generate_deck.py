@@ -36,7 +36,7 @@ def generate_decks():
         AminoAcid("Valine", "Val", "V"),
     )
 
-    generate_svgs.generate_svgs([aa.name for aa in AMINO_ACIDS])
+    generate_svgs.generate_svgs(aa.name for aa in AMINO_ACIDS)
 
 
 if __name__ == "__main__":
