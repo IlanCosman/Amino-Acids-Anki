@@ -22,10 +22,9 @@ def generate_svgs(names: Iterable[str]) -> None:
     D.find_element(By.XPATH, "//button[text()='Allow']").click()
 
     is_first = True
-
     for name in names:
         D.find_element(By.XPATH, "(//button[@id='CDW_NameToStructure'])[2]").click()
-        if is_first:
+        if is_first:  # Disable "Paste name below structure" on first run
             D.find_element(By.CSS_SELECTOR, ".checkbox-inline").click()
             is_first = False
         D.find_element(By.CSS_SELECTOR, ".cdd-dialog-input:nth-child(2)").clear()
