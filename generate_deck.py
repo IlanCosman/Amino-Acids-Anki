@@ -16,14 +16,14 @@ class AminoAcid:
     one_letter_code: str
 
 
-class AminoAcidCardField(enum.StrEnum):
+class NoteField(enum.StrEnum):
     NAME = "Name"
     STRUCTURE = "Structure"
     THREE_LETTER_CODE = "Three Letter Code"
     ONE_LETTER_CODE = "One Letter Code"
 
 
-def generate_decks() -> None:
+def generate_deck() -> None:
     AMINO_ACIDS = (
         AminoAcid("Alanine", "Ala", "A"),
         AminoAcid("Arginine", "Arg", "R"),
@@ -48,7 +48,7 @@ def generate_decks() -> None:
         AminoAcid("Valine", "Val", "V"),
     )
 
-    BASE_DIR = os.getcwd()
+    BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
     OUT_DIR = os.path.join(BASE_DIR, "out")
     if not os.path.exists(OUT_DIR):
@@ -58,19 +58,17 @@ def generate_decks() -> None:
     MODEL = genanki.Model(
         1864258524,  # ID is unique, do not change
         "Amino Acids Model",
-        fields=[{"name": member.value} for member in AminoAcidCardField],
+        fields=[{"name": member.value} for member in NoteField],
         templates=[
-            get_template(AminoAcidCardField.NAME, AminoAcidCardField.STRUCTURE),
-            get_template(AminoAcidCardField.STRUCTURE, AminoAcidCardField.NAME),
-            get_template(AminoAcidCardField.NAME, AminoAcidCardField.THREE_LETTER_CODE),
-            get_template(AminoAcidCardField.THREE_LETTER_CODE, AminoAcidCardField.NAME),
-            get_template(AminoAcidCardField.NAME, AminoAcidCardField.ONE_LETTER_CODE),
-            get_template(AminoAcidCardField.ONE_LETTER_CODE, AminoAcidCardField.NAME),
+            template(NoteField.NAME, NoteField.STRUCTURE, BASE_DIR),
+            template(NoteField.STRUCTURE, NoteField.NAME, BASE_DIR),
+            template(NoteField.NAME, NoteField.THREE_LETTER_CODE, BASE_DIR),
+            template(NoteField.THREE_LETTER_CODE, NoteField.NAME, BASE_DIR),
+            template(NoteField.NAME, NoteField.ONE_LETTER_CODE, BASE_DIR),
+            template(NoteField.ONE_LETTER_CODE, NoteField.NAME, BASE_DIR),
         ],
         css=open(os.path.join(BASE_DIR, "model.css")).read(),
     )
-
-    print(MODEL.fields)
 
     DECK = genanki.Deck(1304768788, "Amino Acids")  # ID is unique, do not change
 
@@ -94,13 +92,23 @@ def generate_decks() -> None:
     PACKAGE.write_to_file("Amino_Acids.apkg")
 
 
-def get_template(f1: AminoAcidCardField, f2: AminoAcidCardField) -> dict[str, str]:
+def template(f1: NoteField, f2: NoteField, base_dir: str) -> dict[str, str]:
+    front_path = os.path.join(
+        base_dir, "html", f"{f1}-{f2}.front.html".replace(" ", "_")
+    )
+
+    back_path = os.path.join(base_dir, "html", f"{f1}-{f2}.back.html".replace(" ", "_"))
+    if not os.path.exists(back_path):
+        back_path = os.path.join(
+            base_dir, "html", f"{f2}-{f1}.back.html".replace(" ", "_")
+        )
+
     return {
         "name": f"{f1} -> {f2}",
-        "qfmt": f"{{{{{f1}}}}}",
-        "afmt": f"{{{{FrontSide}}}}<hr id=answer>{{{{{f2}}}}}",
+        "qfmt": open(front_path).read(),
+        "afmt": open(back_path).read(),
     }
 
 
 if __name__ == "__main__":
-    generate_decks()
+    generate_deck()
