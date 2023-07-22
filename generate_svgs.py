@@ -7,13 +7,9 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 
 
-def generate_svgs(names: Iterable[str]) -> None:
+def generate_svgs(names: Iterable[str], out_dir: str) -> None:
     NAME_TO_STRUCTURE_SLEEP = 0.75
     GET_SVG_SLEEP = 0.5
-
-    OUT_DIR = os.path.join(os.getcwd(), "out")
-    if not os.path.exists(OUT_DIR):
-        os.mkdir(OUT_DIR)
 
     # Page initialization
     D = webdriver.Chrome()
@@ -38,7 +34,7 @@ def generate_svgs(names: Iterable[str]) -> None:
         time.sleep(GET_SVG_SLEEP)
         svg = D.find_element(By.ID, "modalApiResultContentText").text
         svg = modify_svg(svg)
-        with open(os.path.join(OUT_DIR, f"{name}.svg"), "w") as F:
+        with open(os.path.join(out_dir, f"{name}.svg"), "w") as F:
             F.write(svg)
 
         D.find_element(

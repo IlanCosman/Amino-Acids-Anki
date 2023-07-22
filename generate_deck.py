@@ -1,5 +1,6 @@
 import dataclasses
 import enum
+import os
 
 import genanki
 
@@ -47,7 +48,10 @@ def generate_decks() -> None:
         AminoAcid("Valine", "Val", "V"),
     )
 
-    generate_svgs.generate_svgs(aa.name for aa in AMINO_ACIDS)
+    OUT_DIR = os.path.join(os.getcwd(), "out")
+    if not os.path.exists(OUT_DIR):
+        os.mkdir(OUT_DIR)
+        generate_svgs.generate_svgs((aa.name for aa in AMINO_ACIDS), OUT_DIR)
 
     MODEL = genanki.Model(
         1864258524,  # ID is unique, do not change
@@ -68,6 +72,8 @@ def generate_decks() -> None:
         ],
     )
 
+    print(MODEL.templates)
+
     DECK = genanki.Deck(1304768788, "Amino Acids")  # ID is unique, do not change
 
     for aa in AMINO_ACIDS:
@@ -83,14 +89,18 @@ def generate_decks() -> None:
             )
         )
 
-    genanki.Package(DECK).write_to_file("out.apkg")
+    PACKAGE = genanki.Package(DECK)
+    PACKAGE.media_files = (
+        os.path.join(OUT_DIR, f"{aa.name}.svg") for aa in AMINO_ACIDS
+    )
+    PACKAGE.write_to_file("Amino_Acids.apkg")
 
 
 def template(f1: AminoAcidCardField, f2: AminoAcidCardField) -> dict[str, str]:
     return {
         "name": f"{f1} -> {f2}",
-        "qfmt": f"{{{f1}}}",
-        "afmt": f"{{FrontSide}}<hr id=answer>{{{f2}}}",
+        "qfmt": f"{{{{{f1}}}}}",
+        "afmt": f"{{{{FrontSide}}}}<hr id=answer>{{{{{f2}}}}}",
     }
 
 
