@@ -98,11 +98,11 @@ def template(f1: NoteField, f2: NoteField, base_dir: str) -> dict[str, str]:
     )
 
     # X-Name back is the same as Name-X back, so we just have Name-X in the html folder
-    if f1 == NoteField.NAME:  # If Name-X
+    if f1 == NoteField.NAME:  # If asking for Name-X template
         back_path = os.path.join(
             base_dir, "html", f"{NoteField.NAME}-{f2}.back.html".replace(" ", "_")
         )
-    else:  # If X-Name
+    else:  # If asking for X-Name template
         back_path = os.path.join(
             base_dir, "html", f"{NoteField.NAME}-{f1}.back.html".replace(" ", "_")
         )
