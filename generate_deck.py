@@ -70,6 +70,21 @@ def generate_decks() -> None:
 
     DECK = genanki.Deck(1304768788, "Amino Acids")  # ID is unique, do not change
 
+    for aa in AMINO_ACIDS:
+        DECK.add_note(
+            genanki.Note(
+                model=MODEL,
+                fields=[
+                    aa.name,
+                    f'<img src="{aa.name}.svg">',
+                    aa.three_letter_code,
+                    aa.one_letter_code,
+                ],
+            )
+        )
+
+    genanki.Package(DECK).write_to_file("out.apkg")
+
 
 def template(f1: AminoAcidCardField, f2: AminoAcidCardField) -> dict[str, str]:
     return {
