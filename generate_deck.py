@@ -1,10 +1,11 @@
+import dataclasses
+
 import generate_svgs
-from dataclasses import dataclass
 
 # https://www.albert.io/blog/amino-acid-study-guide-structure-and-function/
 
 
-@dataclass
+@dataclasses.dataclass
 class AminoAcid:
     name: str
     three_letter_code: str
