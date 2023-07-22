@@ -22,7 +22,7 @@ class AminoAcidCardField(enum.StrEnum):
     ONE_LETTER_CODE = "One Letter Code"
 
 
-def generate_decks():
+def generate_decks() -> None:
     AMINO_ACIDS = (
         AminoAcid("Alanine", "Ala", "A"),
         AminoAcid("Arginine", "Arg", "R"),
@@ -71,7 +71,7 @@ def generate_decks():
     DECK = genanki.Deck(1304768788, "Amino Acids")  # ID is unique, do not change
 
 
-def template(f1: AminoAcidCardField, f2: AminoAcidCardField) -> dict:
+def template(f1: AminoAcidCardField, f2: AminoAcidCardField) -> dict[str, str]:
     return {
         "name": f"{f1} -> {f2}",
         "qfmt": f"{{{f1}}}",
