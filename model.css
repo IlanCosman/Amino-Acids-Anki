@@ -1,0 +1,72 @@
+/* Borrowed and modified from the Ultimate Geography deck */
+
+.card {
+  padding: 1em 0;
+  background-color: white;
+  color: black;
+  font-family: Verdana;
+  font-size: 16px;
+  text-align: center;
+}
+
+.type {
+  margin-bottom: 0.25em;
+  color: #333;
+  font-size: 70%;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+/* 
+.info {
+  max-width: 30em;
+  margin: 0.75em auto;
+  color: #333;
+  font-size: 90%;
+  font-style: italic;
+} */
+
+.value {
+  font-size: 150%;
+}
+
+.value--top {
+  margin-top: 1em;
+}
+
+.value--image {
+  margin-top: 0.75em;
+}
+
+.value > img,
+.value > .placeholder {
+  max-width: 100%;
+  height: auto;
+}
+
+/**
+ * Placeholder SVG to hint at the type of answer that is expected.
+ * Used on "Country - Flag" and "Country - Map" templates.
+ */
+.placeholder {
+  color: #333;
+}
+
+.placeholder > path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1;
+}
+
+.night_mode .info,
+.night_mode .type,
+.night_mode .placeholder,
+.nightMode .info,
+.nightMode .type,
+.nightMode .placeholder {
+  color: #ccc;
+}
+
+hr {
+  margin: 1.5em 0;
+}

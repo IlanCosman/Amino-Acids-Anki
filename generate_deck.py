@@ -48,7 +48,9 @@ def generate_decks() -> None:
         AminoAcid("Valine", "Val", "V"),
     )
 
-    OUT_DIR = os.path.join(os.getcwd(), "out")
+    BASE_DIR = os.getcwd()
+
+    OUT_DIR = os.path.join(BASE_DIR, "out")
     if not os.path.exists(OUT_DIR):
         os.mkdir(OUT_DIR)
         generate_svgs.generate_svgs((aa.name for aa in AMINO_ACIDS), OUT_DIR)
@@ -56,23 +58,19 @@ def generate_decks() -> None:
     MODEL = genanki.Model(
         1864258524,  # ID is unique, do not change
         "Amino Acids Model",
-        fields=[
-            {"name": AminoAcidCardField.NAME},
-            {"name": AminoAcidCardField.STRUCTURE},
-            {"name": AminoAcidCardField.THREE_LETTER_CODE},
-            {"name": AminoAcidCardField.ONE_LETTER_CODE},
-        ],
+        fields=[{"name": member.value} for member in AminoAcidCardField],
         templates=[
-            template(AminoAcidCardField.NAME, AminoAcidCardField.STRUCTURE),
-            template(AminoAcidCardField.STRUCTURE, AminoAcidCardField.NAME),
-            template(AminoAcidCardField.NAME, AminoAcidCardField.THREE_LETTER_CODE),
-            template(AminoAcidCardField.THREE_LETTER_CODE, AminoAcidCardField.NAME),
-            template(AminoAcidCardField.NAME, AminoAcidCardField.ONE_LETTER_CODE),
-            template(AminoAcidCardField.ONE_LETTER_CODE, AminoAcidCardField.NAME),
+            get_template(AminoAcidCardField.NAME, AminoAcidCardField.STRUCTURE),
+            get_template(AminoAcidCardField.STRUCTURE, AminoAcidCardField.NAME),
+            get_template(AminoAcidCardField.NAME, AminoAcidCardField.THREE_LETTER_CODE),
+            get_template(AminoAcidCardField.THREE_LETTER_CODE, AminoAcidCardField.NAME),
+            get_template(AminoAcidCardField.NAME, AminoAcidCardField.ONE_LETTER_CODE),
+            get_template(AminoAcidCardField.ONE_LETTER_CODE, AminoAcidCardField.NAME),
         ],
+        css=open(os.path.join(BASE_DIR, "model.css")).read(),
     )
 
-    print(MODEL.templates)
+    print(MODEL.fields)
 
     DECK = genanki.Deck(1304768788, "Amino Acids")  # ID is unique, do not change
 
@@ -96,7 +94,7 @@ def generate_decks() -> None:
     PACKAGE.write_to_file("Amino_Acids.apkg")
 
 
-def template(f1: AminoAcidCardField, f2: AminoAcidCardField) -> dict[str, str]:
+def get_template(f1: AminoAcidCardField, f2: AminoAcidCardField) -> dict[str, str]:
     return {
         "name": f"{f1} -> {f2}",
         "qfmt": f"{{{{{f1}}}}}",
