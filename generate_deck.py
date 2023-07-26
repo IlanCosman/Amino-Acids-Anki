@@ -1,19 +1,12 @@
-import dataclasses
 import enum
 import os
 
 import genanki
 
 import generate_svgs
+from AminoAcid import AminoAcid
 
 # https://www.albert.io/blog/amino-acid-study-guide-structure-and-function/
-
-
-@dataclasses.dataclass
-class AminoAcid:
-    name: str
-    three_letter_code: str
-    one_letter_code: str
 
 
 class NoteField(enum.StrEnum):
@@ -43,7 +36,7 @@ def generate_deck() -> None:
         AminoAcid("Selenocysteine", "Sec", "U"),
         AminoAcid("Serine", "Ser", "S"),
         AminoAcid("Threonine", "Thr", "T"),
-        AminoAcid("Tryptophan", "Trp", "W"),
+        AminoAcid("Tryptophan", "Trp", "W", use_xml_to_svg=True),
         AminoAcid("Tyrosine", "Tyr", "Y"),
         AminoAcid("Valine", "Val", "V"),
     )
@@ -53,7 +46,7 @@ def generate_deck() -> None:
     OUT_DIR = os.path.join(BASE_DIR, "out")
     if not os.path.exists(OUT_DIR):
         os.mkdir(OUT_DIR)
-        generate_svgs.generate_svgs((aa.name for aa in AMINO_ACIDS), OUT_DIR)
+        generate_svgs.generate_svgs(AMINO_ACIDS, os.path.join(BASE_DIR, "xml"), OUT_DIR)
 
     MODEL = genanki.Model(
         1864258524,  # ID is unique, do not change
