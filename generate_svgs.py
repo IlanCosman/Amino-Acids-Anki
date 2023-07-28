@@ -19,6 +19,8 @@ def generate_svgs(amino_acids: Iterable[AminoAcid], xml_dir: str, out_dir: str) 
     D = webdriver.Chrome()
     D.implicitly_wait(10)  # set implicit wait seconds
     D.get("https://chemdrawdirect.perkinelmer.cloud/js/sample/index.html?wasm=1")
+
+    # Click on the "Allow" button for clipboard access
     D.find_element(By.XPATH, "//button[text()='Allow']").click()
 
     is_first = True
